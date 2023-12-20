@@ -1,5 +1,5 @@
 # AssistentsAPI-OpenAI-TelegramBot
-The simplest code for interacting with the Assistants API Open AI in Telegam bot.
+The simplest code for interacting with the Assistants API Open AI in Telegram bot.
 
 Instructions:
 - write to OPENAI_API_KEY and TELEGRAM_BOT_TOKEN

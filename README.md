@@ -1,4 +1,4 @@
-# APIAssistent-telegrambot
+# AssistentsAPI-OpenAI-TelegramBot
 The simplest code for interacting with the Assistants API Open AI in Telegam bot.
 
 Instructions:

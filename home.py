@@ -56,7 +56,7 @@ def main():
     client = openai.Client()
 
     existing_assistants = client.beta.assistants.list()
-    existing_assistant = next((assistant for assistant in existing_assistants.data if assistant.id == "asst_5h5SOuRkeAtCrzmiY4kVSat0"), None)
+    existing_assistant = next((assistant for assistant in existing_assistants.data if assistant.id == "ASSISTANT_ID"), None)
 
     if existing_assistant is None:
         print("The existing assistant was not found.")

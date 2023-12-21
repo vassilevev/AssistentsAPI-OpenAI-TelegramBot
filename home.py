@@ -45,8 +45,22 @@ def handle_message(update: Update, context: CallbackContext, client, thread, ass
 
         update.message.reply_text(assistant_message)
 
-def start(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text("Приветствие")
+def start(update: Update, context: CallbackContext, client, assistant, thread) -> None:
+    run = client.beta.threads.runs.create(
+        thread_id=thread.id,
+        assistant_id=assistant.id,
+    )
+
+    run = check_run(client, thread.id, run.id)
+
+    if run is not None:
+        messages = client.beta.threads.messages.list(
+            thread_id=thread.id
+        )
+
+        assistant_message = messages.data[0].content[0].text.value
+
+        update.message.reply_text(assistant_message)
 
 def main():
     load_dotenv(override=True, dotenv_path=".env")
@@ -56,7 +70,7 @@ def main():
     client = openai.Client()
 
     existing_assistants = client.beta.assistants.list()
-    existing_assistant = next((assistant for assistant in existing_assistants.data if assistant.id == "ASSISTANT_ID"), None)
+    existing_assistant = next((assistant for assistant in existing_assistants.data if assistant.id == "ASSISTANTS_ID"), None)
 
     if existing_assistant is None:
         print("The existing assistant was not found.")
@@ -68,7 +82,7 @@ def main():
 
     dispatcher = updater.dispatcher
 
-    dispatcher.add_handler(CommandHandler('start', start))
+    dispatcher.add_handler(CommandHandler('start', lambda update, context: start(update, context, client, existing_assistant, thread)))
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, lambda update, context: handle_message(update, context, client, thread, existing_assistant)))
 
     updater.start_polling()
